@@ -1,3 +1,4 @@
+import gc
 import keras
 import numpy as np
 import sys
@@ -100,6 +101,9 @@ def train():
         )
 
         model.save(f'../input/dataset/{user_id:04}-{i:02}.keras')
+
+        del model
+        gc.collect()
 
 
 pre_train()
