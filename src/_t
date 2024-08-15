@@ -1,16 +1,16 @@
 #!/bin/sh
 
-python write_dataset.py
+# python write_dataset.py
 
-python train.py 1 0
-python train.py 2 0
-python train.py 3 0
-python train.py 4 0
+# python train.py 1 0
+# python train.py 2 0
+# python train.py 3 0
+# python train.py 4 0
 
-python check.py 1
-python check.py 2
-python check.py 3
-python check.py 4
+# python check.py 1
+# python check.py 2
+# python check.py 3
+# python check.py 4
 
 python train.py 1 1
 python train.py 2 1

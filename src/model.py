@@ -90,7 +90,7 @@ def create_model():
 
         x = Flatten()(x)
 
-        for units in (8192, 4096, 1024, 512, 256):
+        for units in (8192, 4096, 1024, 512):
             x = Dense(units)(x)
 
             for _ in range(2):
