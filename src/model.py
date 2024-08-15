@@ -57,6 +57,24 @@ def create_model():
             Add()
         )
 
+    def MlpUnit0(units):
+        return rcompose(
+            BatchNormalization(),
+            Activation(),
+            ljuxt(
+                rcompose(
+                    Dense(units),
+
+                    BatchNormalization(),
+                    Activation(),
+                    Dropout(0.3),
+                    Dense(units)
+                ),
+                Dense(units)
+            ),
+            Add()
+        )
+
     def MlpUnit(units):
         return rcompose(
             ljuxt(
@@ -81,6 +99,8 @@ def create_model():
         x = GaussianNoise()(x)
 
         for _ in range(4):
+            x = LayerNormalization()(x)
+            x = Activation()(x)
             x = DepthwiseConv(2)(x)
 
             for _ in range(2):
@@ -91,9 +111,9 @@ def create_model():
         x = Flatten()(x)
 
         for units in (8192, 4096, 1024, 512):
-            x = Dense(units)(x)
+            x = MlpUnit0(units)(x)
 
-            for _ in range(2):
+            for _ in range(2 - 1):
                 x = MlpUnit(units)(x)
 
         x = Dense(30 * 3)(x)

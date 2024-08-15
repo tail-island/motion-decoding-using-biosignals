@@ -34,10 +34,10 @@ def write_dataset(data):
         xs = np.transpose(xs, (0, 2, 1))
         ys = np.transpose(ys, (0, 2, 1))
 
-        # xs = (xs - parameter['xs_min']) / (parameter['xs_max'] - parameter['xs_min'])
+        xs = (xs - parameter['xs_min']) / (parameter['xs_max'] - parameter['xs_min'])
         # ys = (ys - parameter['ys_min']) / (parameter['ys_max'] - parameter['ys_min'])
 
-        xs = (xs - parameter['xs_mean']) / parameter['xs_std']
+        # xs = (xs - parameter['xs_mean']) / parameter['xs_std']
         ys = (ys - parameter['ys_mean']) / parameter['ys_std']
 
         np.save(f'../input/dataset/{user_id:04}-xs.npy', xs)

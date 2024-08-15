@@ -7,10 +7,10 @@
 # python train.py 3 0
 # python train.py 4 0
 
-# python check.py 1
-# python check.py 2
-# python check.py 3
-# python check.py 4
+# python check.py 1  > result.log
+# python check.py 2 >> result.log
+# python check.py 3 >> result.log
+# python check.py 4 >> result.log
 
 python train.py 1 1
 python train.py 2 1

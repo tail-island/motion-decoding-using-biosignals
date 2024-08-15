@@ -7,6 +7,7 @@ from funcy import count
 from itertools import starmap
 from parameter import BATCH_SIZE, NUMBER_OF_MODELS
 from scipy.io import loadmat
+from scipy.stats import trim_mean
 from utility import RootMeanSquaredError3D
 
 
@@ -20,16 +21,21 @@ def get_sub(user_id):
     xs, _, _ = test[f'{user_id:04}'][0][0]
 
     xs = np.transpose(xs, (0, 2, 1))
-    # xs = (xs - parameter['xs_min']) / (parameter['xs_max'] - parameter['xs_min'])
-    xs = (xs - parameter['xs_mean']) / parameter['xs_std']
+    xs = (xs - parameter['xs_min']) / (parameter['xs_max'] - parameter['xs_min'])
+    # xs = (xs - parameter['xs_mean']) / parameter['xs_std']
 
-    ys = np.mean(
+    ys = trim_mean(
         np.array(tuple(map(
             lambda i: keras.models.load_model(f'../input/dataset/{user_id:04}-{i:02}.keras', {'root_mean_squared_error_3d': RootMeanSquaredError3D(user_id)}).predict(xs, batch_size=BATCH_SIZE, verbose=False),
             range(1, NUMBER_OF_MODELS + 1)
         ))),
+        0.2,
         axis=0
     )
+
+    for i in range(len(ys)):
+        for j in range(3):
+            ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), ys[i, :, j], 3))(np.arange(30))
 
     return (
         f'sub{user_id}',
