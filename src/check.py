@@ -1,5 +1,5 @@
 import keras
-# import matplotlib.pyplot as plot
+import matplotlib.pyplot as plot
 import numpy as np
 import pickle
 import sys
@@ -34,23 +34,25 @@ true_ys, pred_ys = map(
     )
 )
 
+
 print(np.sqrt(np.mean(np.sum((true_ys - pred_ys) ** 2, axis=2))))
 
 
-# for true_y, pred_y in zip(true_ys, pred_ys):
-#     figure, axes = plot.subplots(1, 3, figsize=(30, 10))
+for true_y, pred_y in zip(true_ys, pred_ys):
+    figure, axes = plot.subplots(1, 3, figsize=(30, 10))
 
-#     for j in range(3):
-#         axes[j].plot(np.poly1d(np.polyfit(np.arange(30), pred_y[:, j], 3))(np.arange(30)))
-#         axes[j].plot(pred_y[:, j])
-#         axes[j].plot(true_y[:, j])
-#         axes[j].set_ylim(-5, 5)
+    for j in range(3):
+        axes[j].plot(np.poly1d(np.polyfit(np.arange(30), pred_y[:, j], 3))(np.arange(30)))
+        axes[j].plot(pred_y[:, j])
+        axes[j].plot(true_y[:, j])
+        axes[j].set_ylim(-5, 5)
 
-#     plot.show()
+    plot.show()
 
 
 for i in range(len(pred_ys)):
     for j in range(3):
         pred_ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), pred_ys[i, :, j], 3))(np.arange(30))
+
 
 print(np.sqrt(np.mean(np.sum((true_ys - pred_ys) ** 2, axis=2))))

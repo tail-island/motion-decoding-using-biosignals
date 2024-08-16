@@ -56,5 +56,6 @@ def get_sub(user_id):
 
 submission = dict(map(get_sub, range(1, 4 + 1)))
 
+
 with open('submission.json', mode='w') as f:
     json.dump(submission, f)
