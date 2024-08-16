@@ -33,6 +33,8 @@ def get_sub(user_id):
         axis=0
     )
 
+    ys = ys * parameter['ys_std'] + parameter['ys_mean']
+
     for i in range(len(ys)):
         for j in range(3):
             ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), ys[i, :, j], 3))(np.arange(30))

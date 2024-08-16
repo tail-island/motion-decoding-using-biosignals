@@ -1,20 +1,13 @@
 #!/bin/sh
 
-# python write_dataset.py
+python write_dataset.py
 
-# python train.py 1 0
-# python train.py 2 0
-# python train.py 3 0
-# python train.py 4 0
+python train.py 1 0
+python train.py 2 0
+python train.py 3 0
+python train.py 4 0
 
-# python check.py 1  > result.log
-# python check.py 2 >> result.log
-# python check.py 3 >> result.log
-# python check.py 4 >> result.log
-
-python train.py 1 1
-python train.py 2 1
-python train.py 3 1
-python train.py 4 1
-
-python submit.py
+python check.py 1  > result.log
+python check.py 2 >> result.log
+python check.py 3 >> result.log
+python check.py 4 >> result.log

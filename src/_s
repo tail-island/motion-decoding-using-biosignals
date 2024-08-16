@@ -1,0 +1,10 @@
+#!/bin/sh
+
+python write_dataset.py
+
+python train.py 1 1
+python train.py 2 1
+python train.py 3 1
+python train.py 4 1
+
+python submit.py
