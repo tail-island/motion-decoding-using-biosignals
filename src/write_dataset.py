@@ -65,8 +65,18 @@ data = tuple(map(
     lambda i: (
         i,
         (
-            mat[f'{i:04}'][0][0][0],
-            mat[f'{i:04}'][0][0][1]
+            np.concatenate(
+                (
+                    mat[f'{i:04}'][0][0][0],
+                    mat[f'{i:04}'][0][0][2]
+                )
+            ),
+            np.concatenate(
+                (
+                    mat[f'{i:04}'][0][0][1],
+                    mat[f'{i:04}'][0][0][3]
+                )
+            )
         )
     ),
     (5,)
