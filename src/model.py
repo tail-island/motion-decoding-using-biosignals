@@ -10,32 +10,23 @@ def create_model():
     def Add():
         return keras.layers.Add()
 
-    def BatchNormalization():
-        return keras.layers.BatchNormalization()
+    def Conv(filters):
+        return keras.layers.Conv1D(filters, 3, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
         return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
 
-    def Dense(units):
-        return keras.layers.Dense(units, use_bias=False, kernel_initializer=keras.initializers.HeNormal())
-
     def Dropout(rate):
         return keras.layers.Dropout(rate)
-
-    def Flatten():
-        return keras.layers.Flatten()
 
     def GaussianNoise():
         return keras.layers.GaussianNoise(1e-3)
 
-    def LayerNormalization():
+    def Normalization():
         return keras.layers.LayerNormalization()
 
     def Pooling():
         return keras.layers.AveragePooling1D(2)
-
-    def Reshape(shape):
-        return keras.layers.Reshape(shape)
 
     ####
 
@@ -43,11 +34,11 @@ def create_model():
         return rcompose(
             ljuxt(
                 rcompose(
-                    LayerNormalization(),
+                    Normalization(),
                     Activation(),
                     DepthwiseConv(),
 
-                    LayerNormalization(),
+                    Normalization(),
                     Activation(),
                     Dropout(0.3),
                     DepthwiseConv()
@@ -57,36 +48,36 @@ def create_model():
             Add()
         )
 
-    def MlpUnit0(units):
+    def ConvUnit0(filters):
         return rcompose(
-            BatchNormalization(),
+            Normalization(),
             Activation(),
             ljuxt(
                 rcompose(
-                    Dense(units),
+                    Conv(filters),
 
-                    BatchNormalization(),
+                    Normalization(),
                     Activation(),
-                    Dropout(0.3),
-                    Dense(units)
+                    Dropout(0.2),
+                    Conv(filters)
                 ),
-                Dense(units)
+                Conv(filters)
             ),
             Add()
         )
 
-    def MlpUnit(units):
+    def ConvUnit(filters):
         return rcompose(
             ljuxt(
                 rcompose(
-                    BatchNormalization(),
+                    Normalization(),
                     Activation(),
-                    Dense(units),
+                    Conv(filters),
 
-                    BatchNormalization(),
+                    Normalization(),
                     Activation(),
-                    Dropout(0.3),
-                    Dense(units)
+                    Dropout(0.2),
+                    Conv(filters)
                 ),
                 identity
             ),
@@ -98,8 +89,8 @@ def create_model():
     def op(x):
         x = GaussianNoise()(x)
 
-        for _ in range(4):
-            x = LayerNormalization()(x)
+        for _ in range(5):
+            x = Normalization()(x)
             x = Activation()(x)
             x = DepthwiseConv(2)(x)
 
@@ -108,16 +99,13 @@ def create_model():
 
             x = Pooling()(x)
 
-        x = Flatten()(x)
+        x = x[:, :30, :]
 
-        for units in (8192, 4096, 1024, 512):
-            x = MlpUnit0(units)(x)
+        for filters in (256, 128, 64, 32, 3):
+            x = ConvUnit0(filters)(x)
 
             for _ in range(2 - 1):
-                x = MlpUnit(units)(x)
-
-        x = Dense(30 * 3)(x)
-        x = Reshape((30, 3))(x)
+                x = ConvUnit(filters)(x)
 
         return x
 
