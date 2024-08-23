@@ -2,6 +2,8 @@
 
 python write_dataset.py
 
+rm ../input/dataset/*.keras
+
 python train.py 1 1
 python train.py 2 1
 python train.py 3 1

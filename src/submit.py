@@ -5,10 +5,13 @@ import pickle
 
 from funcy import count
 from itertools import starmap
-from parameter import BATCH_SIZE, NUMBER_OF_MODELS
+from parameter import BATCH_SIZE
 from scipy.io import loadmat
 from scipy.stats import trim_mean
 from utility import RootMeanSquaredError3D
+
+
+number_of_models = 20
 
 
 test = loadmat('../input/motion-decoding-using-biosignals/test.mat')
@@ -27,7 +30,7 @@ def get_sub(user_id):
     ys = trim_mean(
         np.array(tuple(map(
             lambda i: keras.models.load_model(f'../input/dataset/{user_id:04}-{i:02}.keras', {'root_mean_squared_error_3d': RootMeanSquaredError3D(user_id)}).predict(xs, batch_size=BATCH_SIZE, verbose=False),
-            range(1, NUMBER_OF_MODELS + 1)
+            range(1, number_of_models + 1)
         ))),
         0.2,
         axis=0

@@ -2,6 +2,7 @@
 
 ----
 
+* DepthwiseConv -> MLPじゃなくて、DepthwiseConv -> Convにしてみる。
 * reference.matを使用して、行きと戻りの関係を調べてみる。
 
 ----

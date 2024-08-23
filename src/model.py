@@ -14,7 +14,7 @@ def create_model():
         return keras.layers.BatchNormalization()
 
     def DepthwiseConv(depth_multiplier=1):
-        return keras.layers.DepthwiseConv1D(3, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
+        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
 
     def Dense(units):
         return keras.layers.Dense(units, use_bias=False, kernel_initializer=keras.initializers.HeNormal())
@@ -39,7 +39,7 @@ def create_model():
 
     ####
 
-    def ConvUnit():
+    def DepthwiseConvUnit():
         return rcompose(
             ljuxt(
                 rcompose(
@@ -104,7 +104,7 @@ def create_model():
             x = DepthwiseConv(2)(x)
 
             for _ in range(2):
-                x = ConvUnit()(x)
+                x = DepthwiseConvUnit()(x)
 
             x = Pooling()(x)
 

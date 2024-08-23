@@ -5,12 +5,13 @@ import sys
 
 from model import create_model
 from multiprocessing import Process
-from parameter import BATCH_SIZE, LEARNING_RATE, NUMBER_OF_EPOCHS, NUMBER_OF_MODELS, NUMBER_OF_WARMUP_EPOCHS
+from parameter import BATCH_SIZE, LEARNING_RATE, NUMBER_OF_EPOCHS, NUMBER_OF_WARMUP_EPOCHS
 from utility import RootMeanSquaredError3D
 
 
 user_id = int(sys.argv[1])
 is_validation = sys.argv[2] == '0'
+number_of_models = 10 if is_validation else 20
 
 
 def pre_train():
@@ -46,6 +47,9 @@ def pre_train():
 
     model = create_model()
 
+    # if is_validation:
+    #     model.summary()
+
     model.compile(
         optimizer=keras.optimizers.Lion(
             learning_rate=keras.optimizers.schedules.CosineDecay(
@@ -66,13 +70,10 @@ def pre_train():
         validation_data=validation_data,
     )
 
-    model.save('../input/dataset/0000.keras')
-
-    del model
-    gc.collect()
+    return model
 
 
-def train(model_number):
+def train(model, model_number):
     xs = np.load(f'../input/dataset/{user_id:04}-xs.npy')
     ys = np.load(f'../input/dataset/{user_id:04}-ys.npy')
 
@@ -83,11 +84,6 @@ def train(model_number):
         ys = ys[30:]
     else:
         validation_data = None
-
-    model = keras.models.load_model('../input/dataset/0000.keras', {'root_mean_squared_error_3d': RootMeanSquaredError3D(user_id)})
-
-    # if is_validation:
-    #     model.summary()
 
     model.compile(
         optimizer=keras.optimizers.Lion(
@@ -115,11 +111,7 @@ def train(model_number):
     gc.collect()
 
 
-for i in range(1, NUMBER_OF_MODELS + 1):
-    p = Process(target=pre_train)
-    p.start()
-    p.join()
-
-    p = Process(target=lambda: train(i))
+for i in range(1, number_of_models + 1):
+    p = Process(target=lambda: train(pre_train(), i))
     p.start()
     p.join()
