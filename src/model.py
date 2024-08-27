@@ -14,7 +14,7 @@ def create_model():
         return keras.layers.Conv1D(filters, 3, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
-        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
+        return keras.layers.DepthwiseConv1D(3, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
 
     def Dropout(rate):
         return keras.layers.Dropout(rate)
@@ -104,7 +104,7 @@ def create_model():
         for filters in (256, 128, 64, 32, 3):
             x = ConvUnit0(filters)(x)
 
-            for _ in range(2 - 1):
+            for _ in range(4 - 1):
                 x = ConvUnit(filters)(x)
 
         return x
