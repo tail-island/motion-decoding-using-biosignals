@@ -58,7 +58,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(0.2),
+                    Dropout(0.3),
                     Conv(filters)
                 ),
                 Conv(filters)
@@ -76,7 +76,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(0.2),
+                    Dropout(0.3),
                     Conv(filters)
                 ),
                 identity
