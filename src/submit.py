@@ -47,8 +47,7 @@ def get_sub(user_id):
         dict(starmap(
             lambda i, y: (
                 f'trial{i}',
-                # (y * (-1, -1, 1)).tolist()
-                (y * (-1.00402442, -1.06670675, 1.72811961)).tolist()
+                (y * (-1, -1, 1)).tolist()
             ),
             zip(
                 count(1),

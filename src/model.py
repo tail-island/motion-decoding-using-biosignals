@@ -94,7 +94,7 @@ def create_model():
             x = Activation()(x)
             x = DepthwiseConv(2)(x)
 
-            for _ in range(2):
+            for _ in range(4):
                 x = DepthwiseConvUnit()(x)
 
             x = Pooling()(x)
