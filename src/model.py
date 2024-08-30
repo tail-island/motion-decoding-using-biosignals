@@ -1,6 +1,7 @@
 import keras
 
 from funcy import identity, juxt, ljuxt, rcompose
+from parameter import DROPOUT_RATE
 
 
 def create_model():
@@ -11,10 +12,10 @@ def create_model():
         return keras.layers.Add()
 
     def Conv(filters):
-        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
+        return keras.layers.Conv1D(filters, 3, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
-        return keras.layers.DepthwiseConv1D(3, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
+        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
 
     def Dropout(rate):
         return keras.layers.Dropout(rate)
@@ -40,7 +41,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(0.3),
+                    Dropout(DROPOUT_RATE),
                     DepthwiseConv()
                 ),
                 identity
@@ -58,7 +59,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(0.3),
+                    Dropout(DROPOUT_RATE),
                     Conv(filters)
                 ),
                 Conv(filters)
@@ -76,7 +77,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(0.3),
+                    Dropout(DROPOUT_RATE),
                     Conv(filters)
                 ),
                 identity
@@ -94,7 +95,7 @@ def create_model():
             x = Activation()(x)
             x = DepthwiseConv(2)(x)
 
-            for _ in range(4):
+            for _ in range(2):
                 x = DepthwiseConvUnit()(x)
 
             x = Pooling()(x)
@@ -109,4 +110,9 @@ def create_model():
 
         return x
 
-    return keras.Model(*juxt(identity, op)(keras.Input((1000, 16))))
+    return keras.Model(
+        *juxt(
+            identity,
+            op
+        )(keras.Input((1000, 16)))
+    )
