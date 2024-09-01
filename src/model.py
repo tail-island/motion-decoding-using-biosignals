@@ -12,7 +12,7 @@ def create_model():
         return keras.layers.Add()
 
     def Conv(filters):
-        return keras.layers.Conv1D(filters, 3, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
+        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
         return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
