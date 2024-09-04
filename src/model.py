@@ -1,7 +1,7 @@
 import keras
 
 from funcy import identity, juxt, ljuxt, rcompose
-from parameter import DROPOUT_RATE
+from parameter import DROPOUT_RATE, NOISE_STDDEV
 
 
 def create_model():
@@ -12,16 +12,16 @@ def create_model():
         return keras.layers.Add()
 
     def Conv(filters):
-        return keras.layers.Conv1D(filters, 7, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
+        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
-        return keras.layers.DepthwiseConv1D(7, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
+        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
 
     def Dropout(rate):
         return keras.layers.Dropout(rate)
 
     def GaussianNoise():
-        return keras.layers.GaussianNoise(1e-3)
+        return keras.layers.GaussianNoise(NOISE_STDDEV)
 
     def Normalization():
         return keras.layers.LayerNormalization()
