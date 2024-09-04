@@ -4,7 +4,6 @@ import numpy as np
 import sys
 
 from model import create_model
-from multiprocessing import Process
 from parameter import BATCH_SIZE, LEARNING_RATE, NUMBER_OF_EPOCHS, NUMBER_OF_WARMUP_EPOCHS
 from utility import RootMeanSquaredError3D
 
@@ -111,7 +110,7 @@ def train(model, model_number):
     gc.collect()
 
 
+model = pre_train()
+
 for i in range(1, number_of_models + 1):
-    p = Process(target=lambda: train(pre_train(), i))
-    p.start()
-    p.join()
+    train(keras.models.clone_model(model), i)
