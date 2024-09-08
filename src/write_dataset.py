@@ -24,7 +24,7 @@ def write_parameter(data):
             )
 
 
-def write_dataset(data):
+def write_dataset(data, is_pred=False):
     for user_id, user_data in data:
         with open(f'../input/dataset/{user_id:04}-parameter.pickle', mode='rb') as f:
             parameter = pickle.load(f)
@@ -40,8 +40,8 @@ def write_dataset(data):
         # xs = (xs - parameter['xs_mean']) / parameter['xs_std']
         ys = (ys - parameter['ys_mean']) / parameter['ys_std']
 
-        np.save(f'../input/dataset/{user_id:04}-xs.npy', xs)
-        np.save(f'../input/dataset/{user_id:04}-ys.npy', ys)
+        np.save(f'../input/dataset/{user_id:04}-{"pred" if is_pred else ""}-xs.npy', xs)
+        np.save(f'../input/dataset/{user_id:04}-{"pred" if is_pred else ""}-ys.npy', ys)
 
 
 mat = loadmat('../input/motion-decoding-using-biosignals/train.mat')
@@ -56,6 +56,20 @@ data = tuple(map(
     range(1, 4 + 1)
 ))
 
+write_parameter(data)
+write_dataset(data)
+
+mat = loadmat('../input/motion-decoding-using-biosignals/reference.mat')
+data = tuple(map(
+    lambda i: (
+        i,
+        (
+            mat[f'{i:04}'][0][0][0],
+            mat[f'{i:04}'][0][0][1]
+        )
+    ),
+    (5,)
+))
 
 write_parameter(data)
 write_dataset(data)
@@ -65,22 +79,11 @@ data = tuple(map(
     lambda i: (
         i,
         (
-            np.concatenate(
-                (
-                    mat[f'{i:04}'][0][0][0],
-                    mat[f'{i:04}'][0][0][2]
-                )
-            ),
-            np.concatenate(
-                (
-                    mat[f'{i:04}'][0][0][1],
-                    mat[f'{i:04}'][0][0][3]
-                )
-            )
+            mat[f'{i:04}'][0][0][2],
+            mat[f'{i:04}'][0][0][3]
         )
     ),
     (5,)
 ))
 
-write_parameter(data)
-write_dataset(data)
+write_dataset(data, is_pred=True)
