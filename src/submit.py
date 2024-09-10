@@ -1,6 +1,5 @@
 import json
 import keras
-# import matplotlib.pyplot as plot
 import numpy as np
 import pickle
 
@@ -9,7 +8,6 @@ from itertools import starmap
 from parameter import BATCH_SIZE
 from scipy.io import loadmat
 from scipy.stats import trim_mean
-from sklearn.decomposition import PCA
 from utility import RootMeanSquaredError3D
 
 
@@ -45,10 +43,6 @@ def get_sub(user_id):
             ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), ys[i, :, j], 3))(np.arange(30))
 
     np.save(f'../input/dataset/{user_id:04}-pred-ys.npy', ys)
-
-    ys[:, :, :2] = np.reshape(v_2, [np.shape(ys)[0], 30, 2])
-
-    # ここまで
 
     return (
         f'sub{user_id}',

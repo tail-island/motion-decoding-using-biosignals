@@ -35,14 +35,6 @@ true_ys, pred_ys = map(
 )
 
 
-# for i in range(len(pred_ys)):
-#     for j in range(3):
-#         pred_ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), pred_ys[i, :, j], 3))(np.arange(30))
-
-
-print(np.sqrt(np.mean(np.sum((true_ys - pred_ys) ** 2, axis=2))))
-
-
 for true_y, pred_y in zip(true_ys, pred_ys):
     figure, axes = plot.subplots(1, 3, figsize=(30, 10))
 
@@ -53,3 +45,11 @@ for true_y, pred_y in zip(true_ys, pred_ys):
         axes[j].set_ylim(-5, 5)
 
     plot.show()
+
+
+for i in range(len(pred_ys)):
+    for j in range(3):
+        pred_ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), pred_ys[i, :, j], 3))(np.arange(30))
+
+
+print(np.sqrt(np.mean(np.sum((true_ys - pred_ys) ** 2, axis=2))))
