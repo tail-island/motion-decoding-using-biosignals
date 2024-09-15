@@ -90,7 +90,10 @@ def create_model():
     def op(x):
         x = GaussianNoise()(x)
 
-        for i in range(4):
+        for i in range(5):
+            if i != 0:
+                x = Pooling()(x)
+
             x = Normalization()(x)
             x = Activation()(x)
             x = DepthwiseConv(2)(x)
@@ -98,16 +101,13 @@ def create_model():
             for _ in range(2):
                 x = DepthwiseConvUnit()(x)
 
-            if i % 2 == 0:
-                x = Pooling()(x)
-
-        for i, filters in enumerate((512, 256, 128, 64, 32, 3)):
+        for i, filters in enumerate((256, 128, 64, 32, 3)):
             x = ConvUnit0(filters)(x)
 
             for _ in range(4 - 1):
                 x = ConvUnit(filters)(x)
 
-            if i % 2 == 0:
+            if i == 0:
                 x = Pooling()(x)
 
         x = x[:, :30, :]
