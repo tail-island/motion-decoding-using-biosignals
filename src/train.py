@@ -31,7 +31,7 @@ def pre_train():
     ys = np.concatenate(
         (
             np.load('../input/dataset/0005-ys.npy'),
-            np.load('../input/dataset/0005-pred-ys.npy'),
+            np.load('../input/dataset/0005-pred-ys.npy') * (-1, -1, 1),
             *map(
                 lambda i: np.load(f'../input/dataset/{i:04}-ys.npy'),
                 filter(

@@ -90,7 +90,7 @@ def create_model():
     def op(x):
         x = GaussianNoise()(x)
 
-        for i in range(5):
+        for _ in range(5):
             x = Normalization()(x)
             x = Activation()(x)
             x = DepthwiseConv(2)(x)
@@ -102,7 +102,7 @@ def create_model():
 
         x = x[:, :30, :]
 
-        for i, filters in enumerate((256, 128, 64, 32, 3)):
+        for filters in (256, 128, 64, 32, 3):
             x = ConvUnit0(filters)(x)
 
             for _ in range(4 - 1):
