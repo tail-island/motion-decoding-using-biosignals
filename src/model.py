@@ -17,8 +17,8 @@ def create_model():
     def DepthwiseConv(depth_multiplier=1):
         return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
 
-    def Dropout(rate):
-        return keras.layers.Dropout(rate)
+    def Dropout():
+        return keras.layers.Dropout(DROPOUT_RATE)
 
     def GaussianNoise():
         return keras.layers.GaussianNoise(NOISE_STDDEV)
@@ -41,7 +41,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(DROPOUT_RATE),
+                    Dropout(),
                     DepthwiseConv()
                 ),
                 identity
@@ -59,7 +59,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(DROPOUT_RATE),
+                    Dropout(),
                     Conv(filters)
                 ),
                 Conv(filters)
@@ -77,7 +77,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(DROPOUT_RATE),
+                    Dropout(),
                     Conv(filters)
                 ),
                 identity
