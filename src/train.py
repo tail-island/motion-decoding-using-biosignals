@@ -54,9 +54,9 @@ def pre_train():
         optimizer=keras.optimizers.Lion(
             learning_rate=keras.optimizers.schedules.CosineDecay(
                 initial_learning_rate=1e-9,
-                decay_steps=(NUMBER_OF_EPOCHS - NUMBER_OF_WARMUP_EPOCHS) * int(np.ceil(len(xs) / BATCH_SIZE)),
+                decay_steps=(NUMBER_OF_EPOCHS // 2 - NUMBER_OF_WARMUP_EPOCHS // 2) * int(np.ceil(len(xs) / BATCH_SIZE)),
                 warmup_target=LEARNING_RATE,
-                warmup_steps=NUMBER_OF_WARMUP_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
+                warmup_steps=NUMBER_OF_WARMUP_EPOCHS // 2 * int(np.ceil(len(xs) / BATCH_SIZE))
             )
         ),
         loss=RootMeanSquaredError3D(5)
@@ -66,7 +66,7 @@ def pre_train():
         xs,
         ys,
         batch_size=BATCH_SIZE,
-        epochs=NUMBER_OF_EPOCHS,
+        epochs=NUMBER_OF_EPOCHS // 2,
         validation_data=validation_data,
     )
 
