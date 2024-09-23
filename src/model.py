@@ -24,7 +24,7 @@ def create_model():
         return keras.layers.GaussianNoise(NOISE_STDDEV)
 
     def Normalization():
-        return keras.layers.LayerNormalization()
+        return keras.layers.BatchNormalization()
 
     def Pooling():
         return keras.layers.AveragePooling1D(2)
