@@ -12,10 +12,10 @@ def create_model():
         return keras.layers.Add()
 
     def Conv(filters):
-        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
+        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=True, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
-        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
+        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=True, depthwise_initializer=keras.initializers.HeNormal())
 
     def Dropout():
         return keras.layers.Dropout(DROPOUT_RATE)
@@ -24,7 +24,7 @@ def create_model():
         return keras.layers.GaussianNoise(NOISE_STDDEV)
 
     def Normalization():
-        return keras.layers.BatchNormalization()
+        return keras.layers.LayerNormalization()
 
     def Pooling():
         return keras.layers.AveragePooling1D(2)
