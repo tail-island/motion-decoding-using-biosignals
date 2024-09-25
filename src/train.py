@@ -57,7 +57,8 @@ def pre_train():
                 decay_steps=(NUMBER_OF_EPOCHS - NUMBER_OF_WARMUP_EPOCHS) * int(np.ceil(len(xs) / BATCH_SIZE)),
                 warmup_target=LEARNING_RATE,
                 warmup_steps=NUMBER_OF_WARMUP_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
-            )
+            ),
+            weight_decay=0.01
         ),
         loss=RootMeanSquaredError3D(5)
     )
@@ -92,7 +93,8 @@ def train(model, model_number):
                 decay_steps=(NUMBER_OF_EPOCHS - NUMBER_OF_WARMUP_EPOCHS) * int(np.ceil(len(xs) / BATCH_SIZE)),
                 warmup_target=LEARNING_RATE,
                 warmup_steps=NUMBER_OF_WARMUP_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
-            )
+            ),
+            weight_decay=0.01
         ),
         loss=RootMeanSquaredError3D(user_id)
     )
