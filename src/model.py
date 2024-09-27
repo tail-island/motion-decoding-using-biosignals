@@ -31,6 +31,24 @@ def create_model():
 
     ####
 
+    def DepthwiseConvUnit0():
+        return rcompose(
+            Normalization(),
+            Activation(),
+            ljuxt(
+                rcompose(
+                    DepthwiseConv(2),
+
+                    Normalization(),
+                    Activation(),
+                    Dropout(),
+                    DepthwiseConv()
+                ),
+                DepthwiseConv(2)
+            ),
+            Add()
+        )
+
     def DepthwiseConvUnit():
         return rcompose(
             ljuxt(
@@ -91,11 +109,9 @@ def create_model():
         x = GaussianNoise()(x)
 
         for _ in range(5):
-            x = Normalization()(x)
-            x = Activation()(x)
-            x = DepthwiseConv(2)(x)
+            x = DepthwiseConvUnit0()(x)
 
-            for _ in range(2):
+            for _ in range(3 - 1):
                 x = DepthwiseConvUnit()(x)
 
             x = Pooling()(x)

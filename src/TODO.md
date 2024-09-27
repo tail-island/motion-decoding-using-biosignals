@@ -6,12 +6,12 @@
 
 ----
 
-* Normalizationを変更してみる。
-* Poolingを変更してみる。
 * 事後学習で低層のパラメーターを固定してみる。
 
 ----
 
+* Normalizationを変更してみる。
+* Poolingを変更してみる。
 * DepthwiseConvを減らしてConvを増やしてみる。
 * ノイズをやめてみる。
 * 前段のDepthwiseConvをやめてみる。
