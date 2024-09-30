@@ -11,7 +11,7 @@ from utility import RootMeanSquaredError3D
 
 user_id = int(sys.argv[1])
 is_validation = sys.argv[2] == '0'
-number_of_models = 10 if is_validation else 40
+number_of_models = 10 if is_validation else 30
 
 
 def pre_train():
