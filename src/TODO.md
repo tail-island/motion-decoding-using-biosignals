@@ -6,6 +6,7 @@
 
 ----
 
+* number_of_modelsを30のまま、DepthwiseConvもConvも4回に戻す。
 * 事後学習で低層のパラメーターを固定してみる。
 
 ----
