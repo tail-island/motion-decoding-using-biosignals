@@ -111,7 +111,7 @@ def create_model():
         for _ in range(5):
             x = DepthwiseConvUnit0()(x)
 
-            for _ in range(5 - 1):
+            for _ in range(4 - 1):
                 x = DepthwiseConvUnit()(x)
 
             x = Pooling()(x)
