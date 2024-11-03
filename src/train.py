@@ -17,6 +17,7 @@ def pre_train():
     xs = np.concatenate(
         (
             np.load('../input/dataset/0005-xs.npy'),
+            np.load('../input/dataset/0005-pred-xs.npy'),
             *map(
                 lambda i: np.load(f'../input/dataset/{i:04}-xs.npy'),
                 filter(
@@ -29,6 +30,7 @@ def pre_train():
     ys = np.concatenate(
         (
             np.load('../input/dataset/0005-ys.npy'),
+            np.load('../input/dataset/0005-pred-ys.npy') * (-1, -1, 1),
             *map(
                 lambda i: np.load(f'../input/dataset/{i:04}-ys.npy'),
                 filter(
@@ -45,9 +47,7 @@ def pre_train():
     )
 
     model = create_model()
-
-    # if is_validation:
-    #     model.summary()
+    # model.summary()
 
     model.compile(
         optimizer=keras.optimizers.Lion(
@@ -55,8 +55,9 @@ def pre_train():
                 initial_learning_rate=1e-9,
                 decay_steps=(NUMBER_OF_EPOCHS - NUMBER_OF_WARMUP_EPOCHS) * int(np.ceil(len(xs) / BATCH_SIZE)),
                 warmup_target=LEARNING_RATE,
-                warmup_steps=NUMBER_OF_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
-            )
+                warmup_steps=NUMBER_OF_WARMUP_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
+            ),
+            weight_decay=0.01
         ),
         loss=RootMeanSquaredError3D(5)
     )
@@ -90,8 +91,9 @@ def train(model, model_number):
                 initial_learning_rate=1e-9,
                 decay_steps=(NUMBER_OF_EPOCHS - NUMBER_OF_WARMUP_EPOCHS) * int(np.ceil(len(xs) / BATCH_SIZE)),
                 warmup_target=LEARNING_RATE,
-                warmup_steps=NUMBER_OF_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
-            )
+                warmup_steps=NUMBER_OF_WARMUP_EPOCHS * int(np.ceil(len(xs) / BATCH_SIZE))
+            ),
+            weight_decay=0.01
         ),
         loss=RootMeanSquaredError3D(user_id)
     )

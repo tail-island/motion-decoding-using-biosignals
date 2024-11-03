@@ -42,6 +42,8 @@ def get_sub(user_id):
         for j in range(3):
             ys[i, :, j] = np.poly1d(np.polyfit(np.arange(30), ys[i, :, j], 3))(np.arange(30))
 
+    np.save(f'../input/dataset/{user_id:04}-pred-ys.npy', ys)
+
     return (
         f'sub{user_id}',
         dict(starmap(

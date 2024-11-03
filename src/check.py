@@ -22,7 +22,7 @@ pred_ys = trim_mean(
         lambda i: keras.models.load_model(f'../input/dataset/{user_id:04}-{i:02}.keras', {'root_mean_squared_error_3d': RootMeanSquaredError3D(user_id)}).predict(xs, batch_size=32, verbose=False),
         range(1, number_of_models + 1)
     ))),
-    0.2,
+    0.4,
     axis=0
 )
 
@@ -33,9 +33,6 @@ true_ys, pred_ys = map(
         pred_ys
     )
 )
-
-
-# print(np.sqrt(np.mean(np.sum((true_ys - pred_ys) ** 2, axis=2))))
 
 
 # for true_y, pred_y in zip(true_ys, pred_ys):

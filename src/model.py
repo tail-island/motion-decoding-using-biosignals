@@ -12,13 +12,13 @@ def create_model():
         return keras.layers.Add()
 
     def Conv(filters):
-        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=False, kernel_initializer=keras.initializers.HeNormal())
+        return keras.layers.Conv1D(filters, 5, padding='same', use_bias=True, kernel_initializer=keras.initializers.HeNormal())
 
     def DepthwiseConv(depth_multiplier=1):
-        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=False, depthwise_initializer=keras.initializers.HeNormal())
+        return keras.layers.DepthwiseConv1D(5, padding='same', depth_multiplier=depth_multiplier, use_bias=True, depthwise_initializer=keras.initializers.HeNormal())
 
-    def Dropout(rate):
-        return keras.layers.Dropout(rate)
+    def Dropout():
+        return keras.layers.Dropout(DROPOUT_RATE)
 
     def GaussianNoise():
         return keras.layers.GaussianNoise(NOISE_STDDEV)
@@ -31,6 +31,24 @@ def create_model():
 
     ####
 
+    def DepthwiseConvUnit0():
+        return rcompose(
+            Normalization(),
+            Activation(),
+            ljuxt(
+                rcompose(
+                    DepthwiseConv(2),
+
+                    Normalization(),
+                    Activation(),
+                    Dropout(),
+                    DepthwiseConv()
+                ),
+                DepthwiseConv(2)
+            ),
+            Add()
+        )
+
     def DepthwiseConvUnit():
         return rcompose(
             ljuxt(
@@ -41,7 +59,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(DROPOUT_RATE),
+                    Dropout(),
                     DepthwiseConv()
                 ),
                 identity
@@ -59,7 +77,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(DROPOUT_RATE),
+                    Dropout(),
                     Conv(filters)
                 ),
                 Conv(filters)
@@ -77,7 +95,7 @@ def create_model():
 
                     Normalization(),
                     Activation(),
-                    Dropout(DROPOUT_RATE),
+                    Dropout(),
                     Conv(filters)
                 ),
                 identity
@@ -91,11 +109,9 @@ def create_model():
         x = GaussianNoise()(x)
 
         for _ in range(5):
-            x = Normalization()(x)
-            x = Activation()(x)
-            x = DepthwiseConv(2)(x)
+            x = DepthwiseConvUnit0()(x)
 
-            for _ in range(2):
+            for _ in range(5 - 1):
                 x = DepthwiseConvUnit()(x)
 
             x = Pooling()(x)
@@ -105,7 +121,7 @@ def create_model():
         for filters in (256, 128, 64, 32, 3):
             x = ConvUnit0(filters)(x)
 
-            for _ in range(4 - 1):
+            for _ in range(5 - 1):
                 x = ConvUnit(filters)(x)
 
         return x
