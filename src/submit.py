@@ -11,7 +11,7 @@ from scipy.stats import trim_mean
 from utility import RootMeanSquaredError3D
 
 
-number_of_models = 30
+number_of_models = 40
 
 
 test = loadmat('../input/motion-decoding-using-biosignals/test.mat')

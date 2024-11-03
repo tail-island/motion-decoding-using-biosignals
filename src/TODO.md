@@ -7,11 +7,11 @@
 
 ----
 
-* DepthwiseConv * 5、Conv * 4を試してみる。
 * 事後学習で低層のパラメーターを固定してみる。
 
 ----
 
+* DepthwiseConv * 5、Conv * 4を試してみる。
 * DepthwiseConv * 4、Conv * 5を試してみる。
 * Normalizationを変更してみる。
 * Poolingを変更してみる。
